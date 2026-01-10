@@ -82,3 +82,25 @@ Install required packages:
 
 ```bash
 pip install bleak requests asyncio
+
+# 1. Create a folder for the project
+mkdir ~/SmartHome && cd ~/SmartHome
+
+# 2. Create the virtual environment
+python -m venv env
+
+# 3. Activate the environment
+source env/bin/activate
+
+#4. if bleak and request not install use this
+# Install libraries globally
+pip install bleak --break-system-packages
+pip install requests --break-system-packages
+
+# Install the core Bluetooth system packages
+sudo apt update
+sudo apt install bluez bluetooth pi-bluetooth
+
+# Enable and start the Bluetooth service
+sudo systemctl enable bluetooth
+sudo systemctl start bluetooth
