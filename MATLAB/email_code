@@ -1,0 +1,27 @@
+% Enter your MATLAB Code below
+
+% --- CONFIGURATION ---
+channelID = 3224503;        
+readKey = 'YHVQ2YY4SVP3U0S3';      
+alertApiKey = 'TAKE0YK5e49M86XTNwq';
+
+% --- READ DATA ---
+% Read Field 5 (the Edge AI Danger Score from your Raspberry Pi)
+score = thingSpeakRead(channelID, 'Fields', 5, 'ReadKey', readKey);
+
+% --- LOGIC & ACTION ---
+% If the Edge AI has flagged a high suspicion score...
+if score > 15
+    alertUrl = "https://api.thingspeak.com/alerts/send";
+    options = weboptions("HeaderFields", ["ThingSpeak-Alerts-API-Key", alertApiKey]);
+    
+    alertSubject = "???? CRITICAL ALERT: Smart Home Emergency";
+    alertBody = sprintf("Danger Detected! The Edge AI has reported a threat score of %0.0f. Please check your home sensors immediately.", score);
+    
+    % Trigger the email
+    webwrite(alertUrl, "body", alertBody, "subject", alertSubject, options);
+    
+    display("Emergency Email Sent Successfully.");
+else
+    display("System Secure. No alert needed.");
+end
